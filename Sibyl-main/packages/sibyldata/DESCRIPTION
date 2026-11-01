@@ -1,0 +1,43 @@
+Package: sibyldata
+Type: Package
+Title: SIBYL Data Pipeline
+Version: 0.0.0.9000
+Authors@R:
+    person("David", "Stephan", email = "david.stephan@gmail.com",
+           role = c("aut", "cre"))
+Description: Wraps readabs, readrba, fredr, and the OECD package into a single
+    update_data() function that returns tidy panels with vintage tracking,
+    cached locally as parquet via arrow. Provides the series-ID -> MARTIN
+    variable map that lets sibyldata feed packages/martin.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.3)
+Imports:
+    arrow,
+    bimets,
+    dplyr,
+    fs,
+    glue,
+    here,
+    KFAS,
+    lubridate,
+    purrr,
+    readabs,
+    readr,
+    readrba,
+    readxl,
+    rlang,
+    stringr,
+    tempdisagg,
+    tibble,
+    tidyr,
+    fredr,
+    OECD
+Suggests:
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3

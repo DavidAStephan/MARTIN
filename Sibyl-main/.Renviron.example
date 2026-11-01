@@ -1,0 +1,15 @@
+# Copy to .Renviron and fill in. .Renviron is gitignored.
+# Sourced automatically by R at session start.
+
+# FRED — register at https://fred.stlouisfed.org/docs/api/api_key.html
+FRED_API_KEY=
+
+# Quandl (now Nasdaq Data Link) — used for some RBA series in legacy import path.
+# readrba does not require a key; Quandl does. New code should prefer readrba.
+QUANDL_API_KEY=
+
+# Anthropic — for ellmer-based LLM calls in the judgement package.
+ANTHROPIC_API_KEY=
+
+# Optional: where the local parquet data cache lives. Defaults to data/cache.
+# SIBYL_DATA_CACHE=

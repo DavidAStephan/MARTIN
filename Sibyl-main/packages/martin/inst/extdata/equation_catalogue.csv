@@ -1,0 +1,77 @@
+code,name,sector,equation_type,plain_english,units,adjustable,typical_af_sd,transmission_channel
+TDLLA,Trend labour productivity growth,trends,state_space_trend,Slow-moving trend in real GDP per hour worked. Mean-reverts to a steady-state value.,log_diff,FALSE,NA,Drives TY potential growth and equilibrium wage levels via PAE.
+TDLLPOP,Trend working-age population growth,trends,state_space_trend,Slow-moving trend in working-age population. Mean-reverts to a steady-state value.,log_diff,FALSE,NA,Drives TY potential growth and labour supply.
+TDLLHPP,Trend average hours-worked growth,trends,state_space_trend,Slow-moving trend in hours per person.,log_diff,FALSE,NA,Drives TY potential growth.
+PI_E,Inflation expectations,trends,state_space_trend,Slow-moving inflation expectations anchored to the 2.5% target.,percent,TRUE,0.1,"Enters wages (PW), prices (PTM, PC, PG), and interest-rate equations."
+TLUR,NAIRU (non-accelerating-inflation rate of unemployment),trends,state_space_trend,The unobserved equilibrium unemployment rate. Drives LURGAP.,percent,TRUE,0.1,Drives PTM (Phillips curve) and PW (wages).
+RSTAR,Neutral real interest rate,trends,state_space_trend,Slow-moving equilibrium real cash rate. Anchors NCR via Taylor rule.,percent,TRUE,0.25,Drives NCR; transmits to N2R N10R RTWI.
+RC,Household consumption,household,behavioural,Real household consumption growth as a function of disposable income net wealth and the real cash rate.,log_diff,TRUE,0.4,RC -> NC NHS DFD GNE Y; via Y -> LE LUR PW.
+NHOY,Household non-labour income,household,behavioural,Nominal household income excluding compensation of employees.,log_diff,TRUE,0.6,NHOY -> HOY NHDY HDY -> RC.
+NHFA,Household financial assets,household,behavioural,Nominal household financial wealth.,log_diff,TRUE,0.8,NHFA -> NHA NHNW HNW -> RC.
+NHL,Household liabilities,household,behavioural,Household debt stock.,log_diff,TRUE,0.6,NHL -> NHNW HNW -> RC.
+NHC,Household credit,household,behavioural,Mortgage credit; depends on house prices dwelling stock and the mortgage rate.,log_diff,TRUE,0.7,NHC -> NHL.
+KIDC,Household consumption of fixed capital,household,behavioural,Slow-moving depreciation on household durables.,log_diff,FALSE,NA,Subtraction term in net household saving NHS.
+ID,Dwelling investment,housing,behavioural,New residential construction; responds to house prices the mortgage rate and trend population.,log_diff,TRUE,0.8,ID -> KID PH NHC NHNFA OTC DFD Y.
+PH,Established house prices,housing,behavioural,Quarterly growth in established dwelling prices.,log_diff,TRUE,1,PH -> RPH NHC NHNFA HNW -> RC.
+PRT,Consumer price index – rents,housing,behavioural,Rents as a share of consumption deflator; mean-reverts to a unit-labour-cost benchmark.,log_diff,TRUE,0.15,PRT -> PH.
+OTC,Ownership transfer costs,housing,behavioural,Costs associated with property transactions.,log_diff,TRUE,1.5,OTC -> DFD Y NDFD NY.
+IBN,Non-mining business investment,business_investment,behavioural,Non-mining capital expenditure; depends on GNE the user cost of capital and the relative price of investment goods.,log_diff,TRUE,1.5,IBN -> KIBN IB DFD Y.
+IBRE,Mining (resources) business investment,business_investment,behavioural,Mining sector capex; depends on resource export prices.,log_diff,TRUE,3,IBRE -> KIBRE IB; KIBRE drives XRE through the production function.
+KV,Inventories,business_investment,behavioural,Stocks; closes to a target stock-to-output ratio.,log_diff,TRUE,0.6,KV -> V (change in inventories) -> GNE Y.
+GC,Government consumption,public,behavioural,Real public consumption; closes to output adjusted for the unemployment gap.,log_diff,TRUE,0.5,GC -> G DFD Y.
+GI,Government investment,public,behavioural,Real public investment; closes to output adjusted for the unemployment gap.,log_diff,TRUE,1.5,GI -> G DFD Y.
+XRE,Mining exports,trade,behavioural,Resource export volumes; depends on the lagged mining capital stock.,log_diff,TRUE,2.5,XRE -> X NX -> Y NY TOT.
+XM,Manufactured exports,trade,behavioural,Manufactured export volumes; depends on world GDP and the real export-weighted exchange rate.,log_diff,TRUE,2,XM -> X NX.
+XS,Services exports,trade,behavioural,Service export volumes (tourism education etc.).,log_diff,TRUE,2.5,XS -> X NX.
+XAG,Agricultural exports,trade,identity,Total agricultural exports = XAGEXRAIN + RAIN.,level,FALSE,NA,XAG -> X NX.
+XAGEXRAIN,Agricultural exports excluding rain-affected output,trade,behavioural,Agricultural exports adjusted for the rain shock.,log_diff,TRUE,3,XAGEXRAIN -> XAG -> X.
+XO,Other exports,trade,behavioural,Residual exports category.,log_diff,TRUE,2,XO -> X NX.
+M,Imports,trade,behavioural,Import volumes as a function of import-adjusted demand and relative import prices.,log_diff,TRUE,1,M -> Y NY.
+IAD,Import-adjusted demand,trade,identity,Cobb-Douglas weighted aggregate of demand components by import intensity.,level,FALSE,NA,IAD -> M.
+PTM,Trimmed mean inflation,prices_wages,behavioural,Quarterly trimmed-mean CPI inflation; Phillips curve in the unemployment gap with inflation expectations.,log_diff,TRUE,0.1,PTM -> P PC PG PID PIBN PIBRE PXM RTWI NCR.
+P,Headline CPI,prices_wages,behavioural,Headline CPI as a weighted average of trimmed mean and oil-price effects.,log_diff,TRUE,0.1,P is a reported aggregate; minimal feedback.
+PEX,CPI excluding volatile items,prices_wages,identity,Tracks PTM up to a level scaling.,log_diff,FALSE,NA,PEX -> PTM.
+PC,Consumer expenditure deflator,prices_wages,behavioural,Consumption deflator; closes to PTM with PM passthrough.,log_diff,TRUE,0.1,PC -> NC HCOE HOY HDY HNW NHSR PG PID PIBN PIBRE.
+PG,Government demand deflator,prices_wages,behavioural,Public-sector deflator; closes to PC.,log_diff,TRUE,0.1,PG -> NG NV.
+PID,Dwelling investment deflator,prices_wages,behavioural,Closes to a weighted average of PC and PM.,log_diff,TRUE,0.15,PID -> NID.
+PIBN,Non-mining investment deflator,prices_wages,behavioural,Closes to a weighted average of PC and PM.,log_diff,TRUE,0.2,PIBN -> NIBN -> NIB -> NY.
+PIBRE,Mining investment deflator,prices_wages,behavioural,Closes to PC.,log_diff,TRUE,0.3,PIBRE -> NIBRE.
+PM,Import deflator,prices_wages,behavioural,Closes to world export prices oil prices and the exchange rate.,log_diff,TRUE,0.4,PM -> PMCG PC PG PID PIBN PXM PXO.
+PMCG,Consumer-good import deflator,prices_wages,behavioural,Sub-component of PM relevant to consumer-good prices.,log_diff,TRUE,0.4,PMCG -> PTM.
+POTC,Ownership transfer cost deflator,prices_wages,behavioural,Closes to PC.,log_diff,TRUE,0.3,POTC -> NOTC.
+PXAG,Agricultural export deflator,prices_wages,behavioural,Closes to world agricultural prices and the USD rate.,log_diff,TRUE,0.5,PXAG -> NXAG NX.
+PXM,Manufactured export deflator,prices_wages,behavioural,Closes to PM.,log_diff,TRUE,0.3,PXM -> NXM NX.
+PXO,Other exports deflator,prices_wages,behavioural,Closes to PC and world commodity prices.,log_diff,TRUE,0.4,PXO -> NXO NX.
+PXRE,Mining export deflator,prices_wages,behavioural,Closes to world commodity prices in AUD terms.,log_diff,TRUE,1,PXRE -> NXRE NX -> TOT.
+PXS,Services export deflator,prices_wages,behavioural,Closes to PC.,log_diff,TRUE,0.3,PXS -> NXS NX.
+PW,Wage price index,prices_wages,behavioural,Wages Phillips curve in the unemployment gap with inflation expectations.,log_diff,TRUE,0.15,PW -> PAE -> NHCOE HCOE RLC NULC -> labour-cost feedback.
+PAE,Average earnings (national accounts),prices_wages,behavioural,National-accounts measure of average compensation per hour.,log_diff,TRUE,0.2,PAE -> NHCOE HCOE -> RC; RLC -> LE.
+NULCBS,Nominal unit labour cost (Balassa-Samuelson adjusted),prices_wages,behavioural,Balassa-Samuelson-adjusted unit labour cost.,level,FALSE,NA,NULCBS -> PTM.
+LE,Employment,labour,behavioural,Total employment in persons; depends on output the real labour cost and trend hours.,log_diff,TRUE,0.3,LE -> LF LUR NHCOE.
+LUR,Unemployment rate,labour,behavioural,Quarterly change in the unemployment rate; closes to NAIRU via Okun's law plus real-unit-labour-cost dynamics.,level,TRUE,0.15,LUR -> LURGAP -> PW PTM NCR; LF.
+LPR,Labour force participation rate,labour,behavioural,Closes to employment over working-age population.,level,FALSE,NA,Reported aggregate; no model feedback.
+LPOP,Working-age population,labour,behavioural,Working-age population; closes to its trend.,log_diff,FALSE,NA,LPOP -> LF LPR.
+NCR,Nominal cash rate,interest_rates,behavioural,Taylor rule in trimmed-mean inflation and the unemployment gap.,percent,TRUE,0.25,NCR -> RCR N2R N10R NBR NMR -> RC PH NHC NHL.
+N2R,2-year bond yield,interest_rates,behavioural,Expectations-hypothesis term structure; error-corrects toward expected future short rates (RSTAR + PI_E + 0.52 of the current cash-rate gap) with persistence.,percent,TRUE,0.2,N2R -> R2R WR2SP -> RTWI.
+N10R,10-year bond yield,interest_rates,behavioural,Expectations-hypothesis term structure; error-corrects toward expected future short rates (RSTAR + PI_E + 0.25 of the current cash-rate gap) plus a constant term premium.,percent,TRUE,0.3,N10R -> IBCR (cost of capital for IBN).
+NBRSP,Nominal business rate spread,interest_rates,behavioural,Spread of business borrowing rate over the cash rate; widens with unemployment gap.,percent,TRUE,0.1,NBRSP -> NBR -> RBR -> IBCR.
+NSP,Mortgage rate spread,interest_rates,behavioural,Spread of variable mortgage rate over the cash rate.,percent,TRUE,0.05,NSP -> NMR RMR -> RC PH NHC.
+RTWI,Real trade-weighted exchange rate,interest_rates,behavioural,Real TWI; depends on terms of trade and the real-interest-rate spread to the world.,log_diff,TRUE,2,RTWI -> NTWI NUSD REWI -> PM exports.
+NTWI,Nominal trade-weighted exchange rate,interest_rates,behavioural,Nominal TWI identity from real TWI plus relative prices.,log_diff,FALSE,NA,NTWI -> NUSD -> PXAG PXRE POIL PM.
+NUSD,AUD/USD exchange rate,interest_rates,behavioural,AUD/USD nominal exchange rate.,log_diff,FALSE,NA,NUSD -> POIL PXRE PXAG PM.
+WY,World GDP (US proxy),world,behavioural,World GDP growth; AR(1) around steady-state world growth.,log_diff,TRUE,0.5,WY -> XM XS XO XAG.
+WP,World CPI (US proxy),world,behavioural,World CPI; closes to a 2.5% trend.,log_diff,TRUE,0.2,WP -> WPX WPAG WPCOM WPOIL.
+WPX,World export price (US proxy),world,behavioural,World price of manufactured exports.,log_diff,TRUE,0.6,WPX -> PM.
+WPAG,World agricultural prices,world,behavioural,Index of world agricultural commodity prices.,log_diff,TRUE,1.5,WPAG -> PXAG.
+WPCOM,World commodity prices (energy + metals),world,behavioural,Index of world commodity prices; closes to its long-run real value.,log_diff,TRUE,2.5,WPCOM -> PXRE PXO.
+WPOIL,World oil price,world,behavioural,Index of world oil prices.,log_diff,TRUE,3,WPOIL -> POIL PM PMCG P.
+WRR,World real policy rate (US proxy),world,behavioural,World real cash rate; mean-reverts to a steady-state value.,percent,TRUE,0.25,WRR -> WR2R -> RTWI.
+WR2R,World real 2-year rate (US proxy),world,behavioural,World real 2-year rate; spread to WRR.,percent,TRUE,0.25,WR2R -> WR2SP -> RTWI.
+Y,Real GDP,national_accounts,identity,Y = RC + ID + IB + G + OTC - ATS + V + X - M + SD.,level,FALSE,NA,Reported aggregate; feeds back into LE LUR via Okun.
+NY,Nominal GDP,national_accounts,identity,NY = NC + NID + NIB + NG + NOTC + NV + NX - NM - NATS + NSD.,level,FALSE,NA,Reported aggregate.
+GNE,Gross national expenditure,national_accounts,identity,GNE = DFD + V.,level,FALSE,NA,GNE -> IBN PIBRE.
+NGNE,Nominal gross national expenditure,national_accounts,identity,NGNE = NDFD + NV.,level,FALSE,NA,NGNE -> NHFA.
+DFD,Domestic final demand,national_accounts,identity,DFD = RC + ID + IB + G + OTC - ATS.,level,FALSE,NA,DFD -> GNE Y.
+X,Total exports,national_accounts,identity,X = XM + XAG + XO + XRE + XS.,level,FALSE,NA,X -> Y; IAD.
+NX,Nominal exports,national_accounts,identity,NX = NXM + NXS + NXO + NXRE + NXAG.,level,FALSE,NA,NX -> NY.
+TOT,Terms of trade,national_accounts,identity,TOT = PX / PM * 100.,level,FALSE,NA,TOT -> RTWI.

@@ -1,0 +1,36 @@
+Package: nowcast
+Type: Package
+Title: SIBYL Nowcast / Nearcast Layer
+Version: 0.0.0.9000
+Authors@R:
+    person("David", "Stephan", email = "david.stephan@gmail.com",
+           role = c("aut", "cre"))
+Description: Bridge equations and simple time-series models (via fable) that
+    produce Q+0 and Q+1 estimates for the variables MARTIN needs as a
+    handover. Deliberately simple - defensible rather than state-of-the-art.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.3)
+Imports:
+    bimets,
+    dplyr,
+    fable,
+    fabletools,
+    feasts,
+    purrr,
+    rlang,
+    tibble,
+    tidyr,
+    tsibble
+Suggests:
+    testthat (>= 3.0.0),
+    sibyldata,
+    martin,
+    withr
+Config/testthat/edition: 3
+Remotes:
+    local::../sibyldata,
+    local::../martin

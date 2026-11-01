@@ -1,0 +1,68 @@
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Rapp.history
+*.Rproj
+.Rcheck/
+
+# Environment / secrets
+.Renviron
+.env
+
+# renv — keep lockfile, ignore the library
+renv/library/
+renv/python/
+renv/staging/
+renv/local/
+renv/lock-restored
+
+# targets pipeline state
+_targets/
+_targets_r/
+
+# Quarto
+/.quarto/
+*_files/
+*_cache/
+/site_libs/
+
+# Built docs and reports
+/docs/_book/
+/docs/_site/
+/docs/*.html
+/docs/*.pdf
+/docs/*_files/
+reports/_book/
+reports/*.html
+reports/*.pdf
+reports/*_files/
+
+# Parquet / data caches
+data/cache/**/*.parquet
+data/cache/**/*.feather
+data/cache/**/*.csv
+data/cache/**/*.rds
+!data/cache/.gitkeep
+
+# Capture-script output
+scripts/output/
+
+# Package build artefacts
+packages/*/inst/doc/
+packages/*/man/*.Rd.bak
+packages/*/src/*.o
+packages/*/src/*.so
+packages/*/src/*.dll
+
+# Binary workfiles (EViews) — do not commit
+*.wf1
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

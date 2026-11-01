@@ -1,0 +1,251 @@
+martin_var,source,source_id,source_table,source_frequency,aggregation,transformation,description,units,formula
+WY,fred,GDPC1,NA,Q,NA,direct,Real GDP (US proxy for world GDP),USD billions chained,NA
+WP,fred,GDPDEF,NA,Q,NA,direct,GDP deflator (US proxy for world CPI),Index,NA
+WPX,fred,A020RD3Q086SBEA,NA,Q,NA,direct,US export price deflator (proxy for world export price),Index,NA
+WPOIL,fred,MCOILWTICO,NA,M,mean,direct,WTI crude oil spot price,USD per barrel,NA
+WN2R,fred,GS2,NA,M,mean,direct,US 2-year Treasury constant-maturity yield,Percent per annum,NA
+WRCR,fred,FEDFUNDS,NA,M,mean,direct,US federal funds effective rate (proxy for world cash rate),Percent per annum,NA
+W2RSPREAD,fred,T10Y2YM,NA,M,mean,direct,US 10-year minus 2-year Treasury yield spread,Percentage points,NA
+RC,abs,A2304081W,5206.0,Q,NA,direct,Household final consumption expenditure (real chain volume),AUD millions,NA
+NC,abs,A2304037L,5206.0,Q,NA,direct,Household final consumption expenditure (current prices),AUD millions,NA
+ID,abs,A2304098T,5206.0,Q,NA,direct,Dwelling investment (real chain volume),AUD millions,NA
+NID,abs,A2304054R,5206.0,Q,NA,direct,Dwelling investment (current prices),AUD millions,NA
+OTC,abs,A2304099V,5206.0,Q,NA,direct,Ownership transfer costs (real chain volume),AUD millions,NA
+NOTC,abs,A2304055T,5206.0,Q,NA,direct,Ownership transfer costs (current prices),AUD millions,NA
+IB,abs,A2305148W,5206.0,Q,NA,direct,New private business gross fixed capital formation (real),AUD millions,NA
+NIB,abs,A2305146T,5206.0,Q,NA,direct,New private business gross fixed capital formation (nominal),AUD millions,NA
+IBTOT,abs,A2304095K,5206.0,Q,NA,direct,Total private business GFCF including second-hand assets (real),AUD millions,NA
+NIBTOT,abs,A2304051J,5206.0,Q,NA,direct,Total private business GFCF including second-hand assets (nominal),AUD millions,NA
+V,abs,A2304112A,5206.0,Q,NA,direct,Changes in inventories (real chain volume),AUD millions,NA
+NV,abs,A2304068C,5206.0,Q,NA,direct,Changes in inventories (current prices),AUD millions,NA
+GI,abs,A2304109L,5206.0,Q,NA,direct,Public gross fixed capital formation (real),AUD millions,NA
+NGI,abs,A2304065W,5206.0,Q,NA,direct,Public gross fixed capital formation (nominal),AUD millions,NA
+GC,abs,A2304080V,5206.0,Q,NA,direct,General government final consumption (real),AUD millions,NA
+NGC,abs,A2304036K,5206.0,Q,NA,direct,General government final consumption (nominal),AUD millions,NA
+DFD,abs,A2304111X,5206.0,Q,NA,direct,Domestic final demand (real),AUD millions,NA
+NDFD,abs,A2304067A,5206.0,Q,NA,direct,Domestic final demand (nominal),AUD millions,NA
+GNE,abs,A2304113C,5206.0,Q,NA,direct,Gross national expenditure (real),AUD millions,NA
+NGNE,abs,A2303823C,5206.0,Q,NA,direct,Gross national expenditure (nominal),AUD millions,NA
+X,abs,A2304114F,5206.0,Q,NA,direct,Exports of goods and services (real),AUD millions,NA
+NX,abs,A2303824F,5206.0,Q,NA,direct,Exports of goods and services (nominal),AUD millions,NA
+M,abs,A2304115J,5206.0,Q,NA,direct,Imports of goods and services (real),AUD millions,NA
+NM,abs,A2303825J,5206.0,Q,NA,direct,Imports of goods and services (nominal),AUD millions,NA
+Y,abs,A2304402X,5206.0,Q,NA,direct,Real GDP (chain volume),AUD millions,NA
+NY,abs,A2304418T,5206.0,Q,NA,direct,Nominal GDP,AUD millions,NA
+SD,abs,A2304116K,5206.0,Q,NA,direct,Statistical discrepancy (real),AUD millions,NA
+NSD,abs,A2303826K,5206.0,Q,NA,direct,Statistical discrepancy (nominal),AUD millions,NA
+LA,abs,A2304192L,5206.0,Q,NA,direct,Labour productivity (GDP per hour worked),Index,NA
+NHDY,abs,A2302939L,5206.0,Q,NA,direct,Household gross disposable income (nominal),AUD millions,NA
+NHCOE,abs,A2302915V,5206.0,Q,NA,direct,Compensation of employees (nominal),AUD millions,NA
+KIDC,abs,A2302940W,5206.0,Q,NA,direct,Household consumption of fixed capital (real),AUD millions,NA
+NHS,abs,A2302837X,5206.0,Q,NA,direct,Net household saving (nominal),AUD millions,NA
+XS,abs,A3535093X,5302.0,Q,NA,direct,Services exports (real),AUD millions,NA
+NXS,abs,A3535247C,5302.0,Q,NA,direct,Services exports (nominal),AUD millions,NA
+XAG,abs,A3535041W,5302.0,Q,NA,direct,Agricultural exports (real),AUD millions,NA
+NXAG,abs,A3535191C,5302.0,Q,NA,direct,Agricultural exports (nominal),AUD millions,NA
+LE,abs,A84423043C,6202.0,M,mean,direct,Employed persons (labour force survey),Persons (thousands),NA
+LF,abs,A84423047L,6202.0,M,mean,direct,Labour force,Persons (thousands),NA
+LPR,abs,A84423051C,6202.0,M,mean,direct,Labour force participation rate,Percent,NA
+LPOP,abs,A84423091W,6202.0,M,mean,direct,Civilian population aged 15+,Persons (thousands),NA
+HOURS,abs,A84426277X,6202.0,M,mean,direct,Monthly hours worked in all jobs,Hours (millions),NA
+PW,abs,A2713849C,6345.0,Q,NA,direct,Wage price index (all sectors),Index,NA
+PMCG,abs,A2298279F,6457.0,Q,NA,direct,Consumer goods import price index,Index,NA
+PRT,abs,A2331876F,6401.0,Q,NA,direct,CPI rent sub-component (used in housing equations),Index,NA
+PH,abs,A83728455L,6416.0,Q,NA,direct,Residential property price index (eight capital cities),Index,NA
+PH_OLD,abs,A2333613R,6416.0,Q,NA,direct,Established house price index (legacy series for backcast),Index,NA
+NHFA,abs,A83722657A,5232.0,Q,NA,direct,Household financial assets (nominal),AUD millions,NA
+NHNFA_CD,abs,A83722666C,5232.0,Q,NA,direct,Household consumer durables (nominal),AUD millions,NA
+NHNFA_DW,abs,A83728305F,5232.0,Q,NA,direct,Household dwellings (nominal),AUD millions,NA
+NHL,abs,A83722670V,5232.0,Q,NA,direct,Household liabilities (nominal),AUD millions,NA
+IBRE_CAPEX,abs,A3515959C,5625.0,Q,NA,direct,Mining new capex (real chain volume),AUD millions,NA
+NIBRE_CAPEX,abs,A3515137T,5625.0,Q,NA,direct,Mining new capex (nominal),AUD millions,NA
+KIBRE,abs,A3347284T,5204.0,A,NA,chowlin,Mining net capital stock (annual; interpolated to quarterly via Chow-Lin),AUD millions,NA
+IBRE,abs,A3347277V,5204.0,A,NA,chowlin,Mining gross fixed capital formation (Chow-Lin from annual A3347277V using IBRE_CAPEX indicator),AUD millions,NA
+NIBRE,abs,A3348050V,5204.0,A,NA,chowlin,Mining gross fixed capital formation (nominal; Chow-Lin from annual A3348050V using NIBRE_CAPEX indicator),AUD millions,NA
+KID,abs,A2422532F,5204.0,A,NA,chowlin,Dwelling net capital stock (annual; interpolated),AUD millions,NA
+KTOT,abs,A2422574C,5204.0,A,NA,chowlin,Total net capital stock (annual),AUD millions,NA
+KOTC,abs,A2422539W,5204.0,A,NA,chowlin,Ownership transfer cost capital stock (annual),AUD millions,NA
+NCR,rba,F01_1_FIRMMCRT,F01,M,mean,direct,Cash rate target,Percent per annum,NA
+NCR_HIST,rba,F01_1_FIRMMCRI,F01,M,mean,spliced,Interbank overnight cash rate (used to splice NCR backwards),Percent per annum,NA
+NMR,rba,F05_FILRHLBVS,F05,M,mean,direct,Standard variable mortgage rate (owner-occupier),Percent per annum,NA
+NBR_SPLICE,rba,FLRBFOLBT,F07,M,mean,spliced,Business lending rate (replaces deprecated FILRLBWAV),Percent per annum,NA
+N2R,rba,F02_1_FCMYGBAG2,F02,M,mean,direct,Commonwealth Government 2-year bond yield,Percent per annum,NA
+N10R,rba,F02_1_FCMYGBAG10,F02,M,mean,direct,Commonwealth Government 10-year bond yield,Percent per annum,NA
+NUSD,rba,FXRUSD,F11,D,mean,direct,Nominal AUD/USD exchange rate,USD per AUD,NA
+NTWI,rba,FXRTWI,F11,D,mean,direct,Nominal trade-weighted index,Index May-1970=100,NA
+RTWI,rba,F15_FRERTWI,F15,Q,NA,direct,Real trade-weighted index,Index,NA
+REWI,rba,F15_FREREWI,F15,Q,NA,direct,Real export-weighted index,Index,NA
+NBC,rba,D02_DLCACBS,D02,M,mean,direct,Business credit (seasonally adjusted),AUD billions,NA
+NTC,rba,D02_DLCACS,D02,M,mean,direct,Total credit (seasonally adjusted),AUD billions,NA
+PTM,rba,G01_GCPIOCPMTMQP,G01,Q,NA,level_from_pct,Trimmed mean inflation (quarterly percent; cumulated to level series),Percent,NA
+PEX,rba,G01_GCPIXVIQP,G01,Q,NA,level_from_pct,CPI excluding volatile items (cumulated from quarterly percent to level; base PEXL[1982Q1]=100),Index,NA
+PI_E_BOND,rba,G03_GBONYLD,G03,Q,NA,direct,Break-even 10-year inflation rate from bond yields,Percent,NA
+P,rba,G01_GCPIEITCQP,G01,Q,NA,level_from_pct,Headline CPI excluding interest charges and GST (quarterly percent),Percent,NA
+WPAG,worldbank,iAGRICULTURE,CMO,M,mean,direct,World Bank agricultural commodity price index (monthly historical xlsx),Index 2010=100,NA
+WPCOM,worldbank,iENERGY,CMO,M,mean,direct,World Bank energy commodity price index,Index 2010=100,NA
+SOI,bom,SOI,SOI,M,mean,direct,Southern Oscillation Index (BoM ftp plaintext table),Index,NA
+NHC,derived,NA,NA,Q,NA,derived,NHC = NTC - NBC (household credit = total credit minus business credit),AUD billions,NTC - NBC
+NHNFA,derived,NA,NA,Q,NA,derived,NHNFA = nhnfa_cd + nhnfa_dw (household non-financial assets = consumer durables + dwellings),AUD millions,NHNFA_CD + NHNFA_DW
+PC,derived,NA,NA,Q,NA,derived,PC = NC / RC * 100 (consumption deflator),Index,NC / RC * 100
+PG,derived,NA,NA,Q,NA,derived,PG = (ngi + ngc) / (gi + gc) * 100 (public-demand deflator),Index,(NGI + NGC) / (GI + GC) * 100
+PXAG,derived,NA,NA,Q,NA,derived,PXAG = NXAG / XAG * 100 (agricultural export deflator),Index,NXAG / XAG * 100
+PIB,derived,NA,NA,Q,NA,derived,PIB = NIB / IB * 100 (private business investment deflator),Index,NIB / IB * 100
+PM,derived,NA,NA,Q,NA,derived,PM = NM / M * 100 (import deflator),Index,NM / M * 100
+PGNE,derived,NA,NA,Q,NA,derived,PGNE = NGNE / GNE * 100 (gross national expenditure deflator),Index,NGNE / GNE * 100
+PDFD,derived,NA,NA,Q,NA,derived,PDFD = NDFD / DFD * 100 (domestic final demand deflator),Index,NDFD / DFD * 100
+PX,derived,NA,NA,Q,NA,derived,PX = NX / X * 100 (export deflator),Index,NX / X * 100
+PY,derived,NA,NA,Q,NA,derived,PY = NY / Y * 100 (GDP deflator),Index,NY / Y * 100
+TOT,derived,NA,NA,Q,NA,derived,TOT = PX / PM * 100 (terms of trade),Index,PX / PM * 100
+PID,derived,NA,NA,Q,NA,derived,PID = NID / id * 100 (dwelling investment deflator),Index,NID / ID * 100
+POTC,derived,NA,NA,Q,NA,derived,POTC = NOTC / otc * 100 (ownership transfer cost deflator),Index,NOTC / OTC * 100
+HCOE,derived,NA,NA,Q,NA,derived,HCOE = NHCOE / PC (real compensation of employees),AUD millions,NHCOE / PC
+ATS,derived,NA,NA,Q,NA,derived,ATS = IB - IBtot (second-hand asset sales = new minus total private business investment),AUD millions,IB - IBTOT
+NATS,derived,NA,NA,Q,NA,derived,NATS = NIB - NIBtot (nominal second-hand asset sales),AUD millions,NIB - NIBTOT
+KV,derived,NA,NA,Q,NA,derived,Stocks level via PIM: KV[1980Q1] = 134865 then KV[t] = KV[t-1] + V[t],AUD millions,NA
+NHA,derived,NA,NA,Q,NA,derived,NHA = NHFA + NHNFA (total household assets),AUD millions,NHFA + NHNFA
+NHNW,derived,NA,NA,Q,NA,derived,NHNW = NHA - NHL (household net wealth),AUD millions,NHA - NHL
+NHOY,derived,NA,NA,Q,NA,derived,NHOY = nhdy - NHCOE (household non-labour income),AUD millions,NHDY - NHCOE
+IBN,derived,NA,NA,Q,NA,derived,IBN = IB - IBRE (non-mining business investment),AUD millions,IB - IBRE
+XRE,derived,NA,NA,Q,NA,derived,XRE = sum of resource export sub-categories from ABS 5302 (XRE_ores + XRE_coal + XRE_othm + XRE_metl + XRE_nonm),AUD millions,XRE_ORES + XRE_COAL + XRE_OTHM + XRE_METL + XRE_NONM
+XM,derived,NA,NA,Q,NA,derived,XM = sum of manufactured export sub-categories from ABS 5302 (XM_MACH + XM_TRNS + XM_OTHR + XM_BEVO),AUD millions,XM_MACH + XM_TRNS + XM_OTHR + XM_BEVO
+XO,derived,NA,NA,Q,NA,derived,XO = sum of other export sub-categories minus XM_BEVO (avoiding double-count),AUD millions,XO_CARY + XO_NXOM + XO_NONR - XM_BEVO
+XAGEXRAIN,derived,NA,NA,Q,NA,derived,XAGEXRAIN = XAG - RAIN (agricultural exports excluding rain-affected output),AUD millions,NA
+PIBN,derived,NA,NA,Q,NA,derived,PIBN = NIBN / IBN * 100 (non-mining business investment deflator); NIBN = NIB - NIBRE,Index,NIBN / IBN * 100
+PIBRE,derived,NA,NA,Q,NA,derived,PIBRE = NIBRE / IBRE * 100 (mining investment deflator),Index,NIBRE / IBRE * 100
+PXM,derived,NA,NA,Q,NA,derived,PXM = NXM / XM * 100 (manufactured export deflator),Index,NXM / XM * 100
+PXO,derived,NA,NA,Q,NA,derived,PXO = NXO / XO * 100 (other export deflator),Index,NXO / XO * 100
+PXRE,derived,NA,NA,Q,NA,derived,PXRE = NXRE / XRE * 100 (resource export deflator),Index,NXRE / XRE * 100
+PXS,derived,NA,NA,Q,NA,derived,PXS = NXS / XS * 100 (services export deflator),Index,NXS / XS * 100
+PAE,derived,NA,NA,Q,NA,derived,PAE = NHCOE / (LHPP * LE) (average earnings per hour from national accounts),AUD per hour,NHCOE / (LHPP * LE)
+LUR,derived,NA,NA,Q,NA,derived,LUR = 100 * (1 - LE / LF) (unemployment rate); falls back to UR_hist when missing,Percent,100 * (1 - LE / LF)
+NBRSP,derived,NA,NA,Q,NA,derived,NBRSP = NBR - NCR (business rate spread to cash rate),Percentage points,NBR - NCR
+NSP,derived,NA,NA,Q,NA,derived,NSP = NMR - NCR (mortgage rate spread to cash rate),Percentage points,NMR - NCR
+XM_MACH,abs,A3535051A,5302.0,Q,NA,direct,Machinery and transport manufactures exports (real),AUD millions,NA
+XM_TRNS,abs,A3535052C,5302.0,Q,NA,direct,Transport equipment exports (real),AUD millions,NA
+XM_OTHR,abs,A3535053F,5302.0,Q,NA,direct,Other manufactures exports (real),AUD millions,NA
+XM_BEVO,abs,A3535055K,5302.0,Q,NA,direct,Beverages manufactures exports (real),AUD millions,NA
+NXM_MACH,abs,A3535203A,5302.0,Q,NA,direct,Machinery exports (nominal),AUD millions,NA
+NXM_TRNS,abs,A3535204C,5302.0,Q,NA,direct,Transport equipment exports (nominal),AUD millions,NA
+NXM_OTHR,abs,A3535206J,5302.0,Q,NA,direct,Other manufactures exports (nominal),AUD millions,NA
+NXM_BEVO,abs,A3535208L,5302.0,Q,NA,direct,Beverages exports (nominal),AUD millions,NA
+XRE_ORES,abs,A3535047K,5302.0,Q,NA,direct,Metal ore exports (real),AUD millions,NA
+XRE_COAL,abs,A3535048L,5302.0,Q,NA,direct,Coal exports (real),AUD millions,NA
+XRE_OTHM,abs,A3535049R,5302.0,Q,NA,direct,Other minerals exports (real),AUD millions,NA
+XRE_METL,abs,A3535050X,5302.0,Q,NA,direct,Metals exports (real),AUD millions,NA
+XRE_NONM,abs,A3535060C,5302.0,Q,NA,direct,Non-monetary gold exports (real),AUD millions,NA
+NXRE_ORES,abs,A3535199W,5302.0,Q,NA,direct,Metal ore exports (nominal),AUD millions,NA
+NXRE_COAL,abs,A3535200V,5302.0,Q,NA,direct,Coal exports (nominal),AUD millions,NA
+NXRE_OTHM,abs,A3535201W,5302.0,Q,NA,direct,Other minerals exports (nominal),AUD millions,NA
+NXRE_METL,abs,A3535202X,5302.0,Q,NA,direct,Metals exports (nominal),AUD millions,NA
+NXRE_NONM,abs,A3535214J,5302.0,Q,NA,direct,Non-monetary gold exports (nominal),AUD millions,NA
+XO_CARY,abs,A3535058T,5302.0,Q,NA,direct,Goods procured by carriers (real),AUD millions,NA
+XO_NXOM,abs,A3535059V,5302.0,Q,NA,direct,Net exports of goods under merchanting (real),AUD millions,NA
+XO_NONR,abs,A3535054J,5302.0,Q,NA,direct,Other non-rural exports (real),AUD millions,NA
+NXO_CARY,abs,A3535212C,5302.0,Q,NA,direct,Goods procured by carriers (nominal),AUD millions,NA
+NXO_NXOM,abs,A3535213F,5302.0,Q,NA,direct,Net exports of goods under merchanting (nominal),AUD millions,NA
+NXO_NONR,abs,A3535207K,5302.0,Q,NA,direct,Other non-rural exports (nominal),AUD millions,NA
+NXM,derived,NA,NA,Q,NA,derived,Nominal manufactured exports = sum of sub-categories,AUD millions,NXM_MACH + NXM_TRNS + NXM_OTHR + NXM_BEVO
+NXO,derived,NA,NA,Q,NA,derived,Nominal other exports = sum of sub-categories minus NXM_BEVO,AUD millions,NXO_CARY + NXO_NXOM + NXO_NONR - NXM_BEVO
+NXRE,derived,NA,NA,Q,NA,derived,Nominal mining exports = sum of sub-categories,AUD millions,NXRE_ORES + NXRE_COAL + NXRE_OTHM + NXRE_METL + NXRE_NONM
+NIBN,derived,NA,NA,Q,NA,derived,Nominal non-mining business investment = NIB - NIBRE,AUD millions,NIB - NIBRE
+HDY,derived,NA,NA,Q,NA,derived,HDY = NHDY / PC (real household disposable income),AUD millions,NHDY / PC
+HOY,derived,NA,NA,Q,NA,derived,HOY = NHOY / PC (real household other income),AUD millions,NHOY / PC
+HNW,derived,NA,NA,Q,NA,derived,HNW = NHNW / PC (real household net wealth),AUD millions,NHNW / PC
+G,derived,NA,NA,Q,NA,derived,"G = GI + GC (public demand, real)",AUD millions,GI + GC
+NG,derived,NA,NA,Q,NA,derived,"NG = NGI + NGC (public demand, nominal)",AUD millions,NGI + NGC
+DPFD,derived,NA,NA,Q,NA,derived,DPFD = RC + ID + IB + OTC - ATS (private domestic final demand),AUD millions,RC + ID + IB + OTC - ATS
+NDPFD,derived,NA,NA,Q,NA,derived,NDPFD = NC + NID + NIB + NOTC - NATS (nominal private DFD),AUD millions,NC + NID + NIB + NOTC - NATS
+DFDX,derived,NA,NA,Q,NA,derived,DFDX = DFD + X (domestic final demand including exports),AUD millions,DFD + X
+RPH,derived,NA,NA,Q,NA,derived,RPH = PH / PTM (real house price index),Index,PH / PTM
+NULC,derived,NA,NA,Q,NA,derived,NULC = NHCOE / Y (nominal unit labour cost),AUD per unit,NHCOE / Y
+RLC,derived,NA,NA,Q,NA,derived,RLC = PAE / PGNE (real labour cost),Index,PAE / PGNE
+RULC,derived,NA,NA,Q,NA,derived,RULC = NULC / PGNE (real unit labour cost),Index,NULC / PGNE
+RULCY,derived,NA,NA,Q,NA,derived,"RULCY = NULC / PY (real unit labour cost, GDP-deflated)",Index,NULC / PY
+LURGAP,derived,NA,NA,Q,NA,derived,LURGAP = LUR - TLUR (unemployment gap above NAIRU),Percentage points,LUR - TLUR
+D_OLY,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2004Q4 (post-Olympics revision shock),0/1,NA
+D_AFC1,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1997Q3 (Asian Financial Crisis Q1),0/1,NA
+D_AFC2,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1997Q4 (Asian Financial Crisis Q2),0/1,NA
+D_AFC3,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1998Q1 (Asian Financial Crisis Q3),0/1,NA
+D_AFC4,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1998Q2 (Asian Financial Crisis Q4),0/1,NA
+D_AFC5,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1998Q3 (Asian Financial Crisis Q5),0/1,NA
+D_GSTMAR,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2000Q1 (pre-GST consumption pull-forward),0/1,NA
+D_GSTJUN,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2000Q2 (pre-GST month),0/1,NA
+D_GSTSEP,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2000Q3 (GST introduction),0/1,NA
+D_GSTDEC,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2000Q4 (post-GST settling),0/1,NA
+D_IBRE_1,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1999Q4 (resource investment break Q1),0/1,NA
+D_IBRE_2,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2001Q4 (resource investment break Q2),0/1,NA
+D_IBRE_3,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2002Q1 (resource investment break Q3),0/1,NA
+D_IBRE_4,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2002Q2 (resource investment break Q4),0/1,NA
+D_IBRE_5,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2002Q3 (resource investment break Q5),0/1,NA
+D_LE,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2003Q2 (employment series break),0/1,NA
+D_RBAGOLD,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 1997Q2 (RBA gold reserves sale),0/1,NA
+D_2008Q4,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2008Q4 (GFC quarter),0/1,NA
+PIBRE_DUM1,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2000Q4 (resource investment price level shift),0/1,NA
+PIBRE_DUM2,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2001Q1 (resource investment price level shift),0/1,NA
+PIBRE_DUM3,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2001Q2 (resource investment price level shift),0/1,NA
+PIBRE_DUM4,derived,NA,NA,Q,NA,dummy,Pulse dummy: 1 at 2001Q3 (resource investment price level shift),0/1,NA
+D_OLYX,derived,NA,NA,Q,NA,dummy,"Olympics export-services tristate dummy (+1 2000Q3, -1 2000Q4)",-1/0/+1,NA
+D_CPMCG,derived,NA,NA,Q,NA,dummy,Range dummy: 1 before 2000Q2 (pre-GST consumption regime),0/1,NA
+D_NSP,derived,NA,NA,Q,NA,dummy,Range dummy: 1 strictly between 1997Q4 and 2008Q1,0/1,NA
+DUM_RC,derived,NA,NA,Q,NA,dummy,Range dummy: 1 before 2008Q1 (pre-GFC real cash rate regime),0/1,NA
+LUR_DUM,derived,NA,NA,Q,NA,dummy,"Range dummy: 1 from 2031Q4 onward (steady-state unemployment regime)",0/1,NA
+RTWI_CONST_DUM,derived,NA,NA,Q,NA,dummy,Range dummy: 1 strictly after 2031Q4 (steady-state RTWI regime),0/1,NA
+PC_TREND,derived,NA,NA,Q,NA,dummy,Time trend over 1982Q1-2022Q2; carries past 2022Q2,Index,NA
+PID_TREND,derived,NA,NA,Q,NA,dummy,Time trend over 1982Q1-2022Q2 (dwelling investment deflator drift); carries,Index,NA
+PXM_TREND,derived,NA,NA,Q,NA,dummy,Time trend over 1986Q1-2000Q4 (manufacturing export price); carries,Index,NA
+XS_TREND,derived,NA,NA,Q,NA,dummy,Time trend over 1959Q3-2001Q3 (services export volume drift); carries,Index,NA
+TADP,derived,NA,NA,Q,NA,dummy,Time trend over 1959Q3-2011Q4 (total factor productivity drift); carries,Index,NA
+PIBN_TREND_1,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 1985Q1-2012Q4; 0 before; carries after,Index,NA
+PIBN_TREND_2,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 2013Q1-2022Q2; 0 before; carries after,Index,NA
+POTC_TREND_1,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 1992Q1-2007Q4; 0 before; carries after,Index,NA
+POTC_TREND_2,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 2008Q1-2022Q2; 0 before; carries after,Index,NA
+PXS_TREND_1,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 1986Q1-2000Q4; 0 before; carries after,Index,NA
+PXS_TREND_2,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 2001Q1-2022Q2; 0 before; carries after,Index,NA
+WPX_TREND_1,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 1980Q1-2000Q4; 0 before; carries after,Index,NA
+WPX_TREND_2,derived,NA,NA,Q,NA,dummy,Counter trend incrementing 2001Q1-2022Q2; 0 before; carries after,Index,NA
+PI_TARGET,derived,NA,NA,Q,NA,scalar,RBA inflation target (midpoint of 2-3% band); 2.5 constant series,Percent,NA
+LHPP,derived,NA,NA,Q,NA,derived,LHPP = HOURS / LE * 3 (quarterly hours worked per person; monthly-to-quarterly factor of 3),Hours per person per quarter,HOURS / LE * 3
+TDLLA,derived,NA,NA,Q,NA,state_space,Trend dlog labour productivity from KFAS local-linear-trend on log(LA); port of supply_side.prg ss_la,Per quarter,NA
+TLLA,derived,NA,NA,Q,NA,state_space,Trend log labour productivity (level) smoothed state from ss_la,Log index,NA
+TDLLPOP,derived,NA,NA,Q,NA,state_space,Trend dlog population from KFAS local-linear-trend on log(LPOP); port of supply_side.prg ss_lpop,Per quarter,NA
+TLLPOP,derived,NA,NA,Q,NA,state_space,Trend log population (level) smoothed state from ss_lpop,Log persons,NA
+TDLLHPP,derived,NA,NA,Q,NA,state_space,Trend dlog hours per person (constant) from KFAS random-walk-plus-drift on log(LHPP); port of supply_side.prg ss_lhpp,Per quarter,NA
+TLLHPP,derived,NA,NA,Q,NA,state_space,Trend log hours per person (level) smoothed state from ss_lhpp,Log hours,NA
+GBUSEXP,rba,G03_GBUSEXP,G03,Q,NA,direct,RBA survey measure of business inflation expectations (year-ahead),Percent,NA
+GUNIEXPY,rba,G03_GUNIEXPY,G03,Q,NA,direct,RBA survey of union officials' inflation expectations (year-ahead),Percent,NA
+GUNIEXPYY,rba,G03_GUNIEXPYY,G03,Q,NA,direct,RBA survey of union officials' inflation expectations (longer-horizon),Percent,NA
+GMAREXPY,rba,G03_GMAREXPY,G03,Q,NA,direct,RBA survey of market economists' inflation expectations (year-ahead),Percent,NA
+GMAREXPYY,rba,G03_GMAREXPYY,G03,Q,NA,direct,RBA survey of market economists' inflation expectations (longer-horizon),Percent,NA
+PI_E,derived,NA,NA,Q,NA,state_space,Inflation expectations from 7-signal local-level KFAS port of pistar.prg; trend extracted from DL4PTM + 5 RBA surveys + bond-implied expectations,Percent,NA
+TLUR,derived,NA,NA,Q,NA,state_space,NAIRU from 2-signal Phillips-curve state-space; OLS-pre-estimated gammas with KFAS smoother on (LUR - NAIRU); v0 port of nairu.prg,Percent,NA
+RSTAR,derived,NA,NA,Q,NA,state_space,Neutral real cash rate from KFAS local-linear-trend smoother on real cash rate (NCR - 4*dlog(PTM)*100); v0 simplification of rstar.prg's 11-state model,Percent per annum,NA
+CFCIBRE,abs,A3347265K,5204.0,A,NA,chowlin,Mining business depreciation (annual; Chow-Lin),AUD millions,NA
+CFCID,abs,A2422533J,5204.0,A,NA,chowlin,Dwelling depreciation (annual; Chow-Lin),AUD millions,NA
+CFCOTC,abs,A2422537T,5204.0,A,NA,chowlin,Ownership transfer costs depreciation (annual; Chow-Lin),AUD millions,NA
+CFCTOT,abs,A2422575F,5204.0,A,NA,chowlin,Total consumption of fixed capital (annual; Chow-Lin),AUD millions,NA
+IBCTR,derived,NA,NA,Q,NA,identity,Corporate tax rate (piecewise constant per import_data.prg:535-562),Ratio,NA
+IBNDR,derived,NA,NA,Q,NA,identity,Non-mining business depreciation rate (quarterly); v0 placeholder = fixture mean ~1.5,Percent per quarter,NA
+IBNDRA,derived,NA,NA,Q,NA,derived,"IBNDRA = IBNDR + lag(IBNDR,1) + lag(IBNDR,2) + lag(IBNDR,3) (annualised depreciation rate)",Percent per annum,"IBNDR + bimets::TSLAG(IBNDR,1) + bimets::TSLAG(IBNDR,2) + bimets::TSLAG(IBNDR,3)"
+RBR,derived,NA,NA,Q,NA,derived,"RBR = (1+(1-IBCTR)*NBR/100) / (lag(PTM,1)/lag(PTM,5)) * 100 - 100 (real business rate)",Percent per annum,"(1 + (1 - IBCTR) * NBR / 100) / (bimets::TSLAG(PTM,1) / bimets::TSLAG(PTM,5)) * 100 - 100"
+IBCR,derived,NA,NA,Q,NA,derived,IBCR = user cost of capital identity from RBR/IBNDRA/IBCTR/N10R/PIBN/PGNE (MARTINMOD_AF.txt:655-656),Ratio,(RBR/100 + IBNDRA/100) * ((1 - IBCTR * (IBNDRA/100 * (1 + N10R/100) / (N10R/100 + IBNDRA/100))) / (1 - IBCTR)) * (PIBN/PGNE)
+IAD_W_C,derived,NA,NA,Q,NA,identity,Import-adjusted demand weight for consumption (from ABS IO tables; vendored io_calcs.prg output),Ratio,NA
+IAD_W_GC,derived,NA,NA,Q,NA,identity,Import-adjusted demand weight for government consumption,Ratio,NA
+IAD_W_GI,derived,NA,NA,Q,NA,identity,Import-adjusted demand weight for government investment,Ratio,NA
+IAD_W_I,derived,NA,NA,Q,NA,identity,Import-adjusted demand weight for private investment,Ratio,NA
+IAD_W_X,derived,NA,NA,Q,NA,identity,Import-adjusted demand weight for exports,Ratio,NA
+NBR,rba,F05_FILRLBWAV,F05,M,mean,direct,Business borrowing rate (historical RBA F05 weighted-average; deprecated 2019Q3 but spans 1978-2019),Percent per annum,NA
+RT,abs,A3348585R,8501.0,M,mean,direct,Retail trade turnover (total industries; seasonally adjusted); leading monthly indicator for quarterly consumption,AUD millions,NA
+NHFA_TREND,derived,NA,NA,Q,NA,dummy,"Range dummy: 1 from 2003Q3-2007Q2 (financial-asset-trend period; used in NHFA behavioural)",0/1,NA
+NFOY,abs,A3535270A,5302.0,Q,NA,direct,Net primary income (BoP; seasonally adjusted) -- external_accounting feature,AUD millions,NA
+NTRF,abs,A3535267L,5302.0,Q,NA,direct,Net secondary income (BoP; seasonally adjusted) -- external_accounting feature,AUD millions,NA
+NTRANSFERS,abs,A2302919C,5206.0,Q,NA,direct,General government social assistance benefits in cash (SA) -- fiscal_accounting feature,AUD millions,NA
+NGPRI,abs,A2302732C,5206.0,Q,NA,direct,General government total primary income receivable (SA),AUD millions,NA
+NGSEC,abs,A2302741F,5206.0,Q,NA,direct,General government total secondary income receivable (SA),AUD millions,NA
+NGREV,derived,NA,NA,Q,NA,derived,Total general government revenue (primary + secondary income receivable) -- fiscal_accounting feature,AUD millions,NGPRI + NGSEC
+NGEXP,abs,A2302753R,5206.0,Q,NA,direct,General government total income payable / total expenditure (SA) -- fiscal_accounting feature,AUD millions,NA
+NGINT,abs,A2302745R,5206.0,Q,NA,direct,General government total interest payable (SA) -- fiscal_accounting feature,AUD millions,NA
+GMI,abs,A2303377R,5206.0,Q,NA,direct,Gross mixed income (SA) -- income_side feature,AUD millions,NA
+TAX_PROD_NET,abs,A2303381F,5206.0,Q,NA,direct,Taxes less subsidies on production and imports (SA) -- income_side feature,AUD millions,NA
+HH_PRIMARY,abs,A2302917X,5206.0,Q,NA,direct,Household total primary income receivable (SA) -- household_income feature,AUD millions,NA
+NHTAX,abs,A2302937J,5206.0,Q,NA,direct,Household total secondary income payable: income tax + transfers paid (SA) -- household_income feature,AUD millions,NA
+DCORP,abs,A3427913W,5232.0,Q,NA,direct,Private non-financial corporations loans and placements borrowed (corporate debt) -- corporate_accelerator feature,AUD millions,NA

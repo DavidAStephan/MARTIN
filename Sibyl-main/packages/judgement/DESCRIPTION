@@ -1,0 +1,38 @@
+Package: judgement
+Type: Package
+Title: SIBYL LLM Layer - Adjustment Proposals and Projection Descriptions
+Version: 0.0.0.9000
+Authors@R:
+    person("David", "Stephan", email = "david.stephan@gmail.com",
+           role = c("aut", "cre"))
+Description: The LLM-facing layer of SIBYL. propose_adjustments() translates
+    a narrative into structured add-factor proposals on MARTIN equations,
+    with rationales. describe_projection() drafts prose describing how a
+    solved projection differs from baseline. Uses ellmer with structured
+    outputs via type_object(). Defines the adjustment S3 class used as the
+    contract between humans LLMs and MARTIN.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.3)
+Imports:
+    cli,
+    dplyr,
+    ellmer,
+    glue,
+    lubridate,
+    purrr,
+    rlang,
+    tibble,
+    tidyr,
+    vctrs
+Suggests:
+    testthat (>= 3.0.0),
+    ellmer,
+    martin,
+    withr
+Config/testthat/edition: 3
+Remotes:
+    local::../martin

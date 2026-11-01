@@ -1,0 +1,41 @@
+Package: martin
+Type: Package
+Title: SIBYL Wrapper Around the bimets Implementation of MARTIN
+Version: 0.0.0.9000
+Authors@R:
+    person("David", "Stephan", email = "david.stephan@gmail.com",
+           role = c("aut", "cre"))
+Description: Wraps the bimets implementation of the RBA's MARTIN
+    macroeconometric model. Takes a starting database, exogenous paths, and a
+    list of add-factors (from package judgement) keyed by equation and
+    horizon; returns a solved projection as a tidy data frame.
+    The bimets model definition files (MARTINMOD*.txt) and a frozen data
+    fixture (MARTINDATA_XLSX) are vendored into inst/extdata/ from
+    references/bimets-main/ with attribution.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.3)
+Imports:
+    bimets,
+    dplyr,
+    glue,
+    judgement,
+    lubridate,
+    purrr,
+    readr,
+    readxl,
+    rlang,
+    tibble,
+    tidyr,
+    xts,
+    zoo
+Suggests:
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3
+Remotes:
+    local::../judgement

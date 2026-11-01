@@ -1,0 +1,536 @@
+---
+title: "SIBYL Round Report"
+subtitle: "`r format(Sys.Date(), '%B %Y')`"
+format:
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: true
+    code-tools: false
+execute:
+  echo: false
+  warning: false
+  message: false
+# Run chunks from the project root so tar_load() finds _targets/
+knitr:
+  opts_knit:
+    root.dir: ".."
+---
+
+```{r setup}
+#| include: false
+library(targets)
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(scales)
+library(knitr)
+
+`%||%` <- function(a, b) if (is.null(a)) b else a
+
+# Load the four local packages the way _targets.R does, so the qmd works
+# whether or not they've been installed for real.
+for (pkg in c("packages/judgement", "packages/martin",
+              "packages/nowcast",   "packages/sibyldata")) {
+  pkg_path <- if (dir.exists(pkg)) pkg else file.path("..", pkg)
+  if (dir.exists(pkg_path)) {
+    try(pkgload::load_all(pkg_path, quiet = TRUE), silent = TRUE)
+  }
+}
+
+# Load every required pipeline target the report uses. Each tar_load fails
+# fast if the target hasn't been built yet.
+tar_load(c(
+  round_id, data_source, narrative, horizon,
+  handover_forecasts,
+  baseline, proposed_adjustments, approved_adjustments,
+  projection, projection_description, round_trip_check
+))
+
+# Optional targets: load defensively so the report still renders against an
+# older pipeline that hasn't built them yet. tar_read_raw() errors if a target
+# is absent (or the store is missing), so wrap it to return NULL on failure;
+# each call site binds the result explicitly.
+soft_tar_load <- function(name) {
+  tryCatch(tar_read_raw(name), error = function(e) NULL)
+}
+# round_metadata: a one-row metadata target the pipeline MAY publish, carrying
+# the real coefficient mode / vintage / approval status (Phase 2 contract).
+round_metadata        <- soft_tar_load("round_metadata")
+# estimation_end: the re-estimation sample end (NULL => frozen coefficients).
+estimation_end        <- soft_tar_load("estimation_end")
+# database_with_handover: the solve input db; carries a provenance attribute
+# when sibyldata built it (live runs). Used for the per-series provenance
+# summary. May not survive every db transform, so treat as best-effort.
+database_with_handover <- soft_tar_load("database_with_handover")
+# Optional stochastic uncertainty bands (opt-in; off the default path).
+projection_bands      <- soft_tar_load("projection_bands")
+# Optional standalone provenance manifest target (tibble(variable, source_class)).
+provenance_manifest   <- soft_tar_load("provenance_manifest")
+
+# Headline aggregates we lead with in every round.
+HEADLINE <- c("Y", "RC", "GNE", "LUR", "PTM", "P", "NCR")
+
+# ---------------------------------------------------------------------------
+# Derive an honest round-metadata view, preferring an explicit round_metadata
+# target when present and degrading gracefully to the targets we already have.
+# ---------------------------------------------------------------------------
+md_get <- function(field, default = NULL) {
+  if (is.null(round_metadata)) return(default)
+  # round_metadata may be a one-row tibble/list or a named list.
+  if (is.data.frame(round_metadata) && field %in% names(round_metadata)) {
+    val <- round_metadata[[field]][1]
+  } else if (is.list(round_metadata) && field %in% names(round_metadata)) {
+    val <- round_metadata[[field]]
+  } else {
+    return(default)
+  }
+  if (is.null(val) || (length(val) == 1L && is.na(val))) default else val
+}
+
+# Coefficient mode: honest. The pipeline uses frozen 2019Q3 coefficients only
+# when estimation_end is NULL; any non-NULL estimation_end RE-ESTIMATES every
+# free coefficient through that quarter (NOT "frozen").
+coef_mode <-
+  md_get("coefficients",
+         if (is.null(estimation_end)) "frozen" else "reestimated")
+est_end <-
+  md_get("estimation_end",
+         if (is.null(estimation_end)) NA_character_ else as.character(estimation_end))
+
+coef_label <- if (identical(coef_mode, "frozen")) {
+  "frozen at the model file's 2019Q3 sample (`MARTINMOD_AF.txt`)"
+} else {
+  paste0("RE-ESTIMATED on data through ",
+         if (is.na(est_end)) "an unspecified quarter" else est_end,
+         " (free coefficients re-fit on every load; restriction-pinned ",
+         "coefficients held)")
+}
+
+# Data vintage: a real date/quarter, NOT the scenario label. Prefer an
+# explicit vintage from round_metadata; else fall back honestly.
+data_vintage <- md_get("data_vintage", NULL)
+if (is.null(data_vintage) || is.na(data_vintage) || !nzchar(as.character(data_vintage))) {
+  data_vintage <- if (identical(data_source, "fixture")) {
+    "unknown (bundled MARTINDATA fixture; no realtime vintage)"
+  } else {
+    # update_data() stamps a fetch-date "vintage"; we do not have it here
+    # unless round_metadata carries it, so be explicit about that.
+    "unknown (live fetch; vintage = fetch-date stamp, not a true realtime cut)"
+  }
+}
+
+# Approval status: was the human gate actually exercised?
+approval_status <- md_get("approval_status", NULL)
+approval_interactive <- md_get("approval_interactive", NULL)
+if (is.null(approval_status)) {
+  approval_status <- if (isTRUE(approval_interactive)) {
+    "human-approved (interactive review gate)"
+  } else if (identical(approval_interactive, FALSE)) {
+    "NOT human-reviewed (non-interactive gate; adjustments passed through)"
+  } else {
+    "unknown (approval gate mode not recorded by the pipeline)"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# Degraded-mode detection. Each flag is honest about WHY the round may not be
+# a clean, fully-live, human-approved forecast.
+# ---------------------------------------------------------------------------
+llm_bypassed <- length(proposed_adjustments) == 0L &&
+  !nzchar(Sys.getenv("ANTHROPIC_API_KEY"))
+no_adjustments <- length(approved_adjustments) == 0L
+fixture_mode   <- identical(data_source, "fixture")
+
+# Per-series provenance: prefer a standalone manifest, else read it off the
+# solve-input database via sibyldata::database_provenance().
+provenance_tbl <- NULL
+if (!is.null(provenance_manifest) && is.data.frame(provenance_manifest)) {
+  provenance_tbl <- provenance_manifest
+} else if (!is.null(database_with_handover)) {
+  provenance_tbl <- tryCatch(
+    sibyldata::database_provenance(database_with_handover),
+    error = function(e) NULL
+  )
+}
+prov_has <- is.data.frame(provenance_tbl) && nrow(provenance_tbl) > 0L
+# A run is "fixture-backfilled" if any series came from the fixture/proxy/dummy
+# rather than live data.
+fixture_backfilled <- prov_has &&
+  any(provenance_tbl$source_class %in%
+        c("fixture_fallback", "vendored_wf1", "proxy", "dummy"))
+
+# Convergence of the projection solve (attached by solve_martin()).
+proj_conv <- attr(projection, "convergence")
+solve_nonconverged <- !is.null(proj_conv) && isFALSE(proj_conv$converged)
+
+degraded <- llm_bypassed || fixture_mode || fixture_backfilled ||
+  solve_nonconverged
+
+# Round a numeric to a sensible number of significant figures for headlines.
+sig <- function(x, digits = 3) signif(x, digits)
+```
+
+```{r degraded-banner}
+#| results: asis
+if (degraded) {
+  cat("::: {.callout-warning title=\"Degraded-mode round\"}\n")
+  cat("This round is **not** a clean, fully-live, human-approved forecast. ",
+      "Reasons:\n\n", sep = "")
+  if (llm_bypassed) {
+    cat("- **LLM bypassed.** `ANTHROPIC_API_KEY` is unset, so no narrative ",
+        "was translated into add-factors; the round shows the no-adjustment ",
+        "baseline.\n", sep = "")
+  } else if (no_adjustments) {
+    cat("- **No adjustments applied.** The LLM proposed no quantitative ",
+        "changes, or all were rejected at review.\n", sep = "")
+  }
+  if (fixture_mode) {
+    cat("- **Fixture data.** `data_source = \"fixture\"`: the round runs on ",
+        "the bundled MARTINDATA snapshot, not a live ABS/RBA/FRED fetch.\n",
+        sep = "")
+  }
+  if (fixture_backfilled) {
+    cat("- **Fixture/proxy backfill.** Some series were filled from the ",
+        "fixture, a vendored `.wf1`, a proxy, or a dummy rather than live ",
+        "data (see the provenance summary below).\n", sep = "")
+  }
+  if (solve_nonconverged) {
+    cat("- **Solve did not fully converge.** The projection carries ",
+        proj_conv$n_nonfinite %||% NA, " non-finite cell(s) inside the ",
+        "solved window; treat the affected paths with caution.\n", sep = "")
+  }
+  cat(":::\n\n")
+}
+```
+
+# Narrative
+
+```{r narrative}
+#| results: asis
+cat("> ", narrative, "\n", sep = "")
+```
+
+# Round configuration
+
+- **Round ID:** `r round_id`
+- **Data source:** `r data_source` `r if (identical(data_source, "fixture")) "(bundled MARTINDATA snapshot)"`
+- **Horizon:** `r horizon[1]` through `r horizon[2]`
+- **Coefficients:** `r coef_label`
+- **Approval status:** `r approval_status`
+- **Adjustments proposed:** `r length(proposed_adjustments)`
+- **Adjustments approved:** `r length(approved_adjustments)`
+
+# Proposed and approved adjustments
+
+```{r adjustments}
+if (length(approved_adjustments) == 0L) {
+  cat("_No adjustments applied this round._",
+      if (length(proposed_adjustments) == 0L) {
+        " The LLM was either bypassed (`ANTHROPIC_API_KEY` unset) or proposed no quantitative changes from the narrative."
+      } else "",
+      "\n")
+} else {
+  approved_tbl <- as_tibble_adjustments(approved_adjustments) |>
+    select(equation, quarter, value, rationale, tail, confidence) |>
+    arrange(equation, quarter)
+  knitr::kable(approved_tbl, digits = 3)
+}
+```
+
+```{r exogenize}
+#| results: asis
+# Show the exogenize list (variables pinned to the baseline path) so the human
+# can see what was held fixed. The attribute survives the approval gate.
+exo <- attr(approved_adjustments, "exogenize") %||% character(0)
+if (length(exo) > 0L) {
+  cat("**Variables exogenised (pinned to the baseline path):** ",
+      paste(exo, collapse = ", "), "\n", sep = "")
+}
+```
+
+# Headline aggregates: baseline vs scenario
+
+```{r headlines-plot}
+#| fig-width: 9
+#| fig-height: 6
+plot_df <- dplyr::bind_rows(
+  baseline   |> mutate(series = "baseline"),
+  projection |> mutate(series = "with_adjustments")
+) |>
+  filter(variable %in% HEADLINE) |>
+  mutate(
+    year    = as.integer(substr(quarter, 1, 4)),
+    qnum    = as.integer(substr(quarter, 6, 6)),
+    qdate   = as.Date(sprintf("%04d-%02d-15", year, (qnum - 1) * 3 + 2))
+  )
+
+if (length(approved_adjustments) == 0L) {
+  plot_df <- plot_df |> filter(series == "baseline")
+}
+
+p <- ggplot(plot_df, aes(qdate, value, colour = series)) +
+  geom_line(linewidth = 0.6) +
+  facet_wrap(~ variable, scales = "free_y") +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  scale_colour_manual(values = c(baseline = "grey50",
+                                  with_adjustments = "steelblue")) +
+  labs(x = NULL, y = NULL, colour = NULL,
+       title = "Solved projections, headline aggregates",
+       subtitle = paste("Horizon", horizon[1], "to", horizon[2])) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# If a stochastic uncertainty band target exists, overlay it (central + ribbon).
+band_overlaid <- FALSE
+if (!is.null(projection_bands) && is.data.frame(projection_bands) &&
+    all(c("variable", "quarter", "lower", "upper") %in% names(projection_bands))) {
+  band_df <- projection_bands |>
+    filter(variable %in% HEADLINE) |>
+    mutate(
+      year  = as.integer(substr(quarter, 1, 4)),
+      qnum  = as.integer(substr(quarter, 6, 6)),
+      qdate = as.Date(sprintf("%04d-%02d-15", year, (qnum - 1) * 3 + 2))
+    )
+  if (nrow(band_df) > 0L) {
+    p <- p +
+      geom_ribbon(
+        data = band_df,
+        aes(qdate, ymin = lower, ymax = upper),
+        inherit.aes = FALSE, fill = "steelblue", alpha = 0.15
+      )
+    band_overlaid <- TRUE
+  }
+}
+p
+```
+
+```{r headline-table}
+#| results: asis
+if (length(approved_adjustments) > 0L) {
+  # Select the horizon-end quarter EXPLICITLY (the latest quarter common to
+  # both paths) rather than trusting row order: last(diff) silently returns
+  # whatever happens to be the final row of the join.
+  joined <- inner_join(
+    baseline   |> select(variable, quarter, baseline = value),
+    projection |> select(variable, quarter, with_adjustments = value),
+    by = c("variable", "quarter")
+  ) |>
+    filter(variable %in% HEADLINE) |>
+    mutate(diff = with_adjustments - baseline)
+
+  end_q <- max(joined$quarter)  # "yyyyQq" sorts lexically within a century
+
+  diff_df <- joined |>
+    group_by(variable) |>
+    summarise(
+      max_abs_diff = max(abs(diff), na.rm = TRUE),
+      diff_at_end  = diff[quarter == end_q][1],
+      .groups = "drop"
+    ) |>
+    # Round headline diffs to sensible significant figures.
+    mutate(
+      max_abs_diff = sig(max_abs_diff, 3),
+      diff_at_end  = sig(diff_at_end, 3)
+    )
+
+  cat("## Diffs vs baseline at end of horizon (", end_q, ")\n\n", sep = "")
+  print(knitr::kable(diff_df, digits = 3))
+  cat("\n_The horizon-end column (", end_q, ") is the deepest extrapolation ",
+      "point in the run — furthest from the last quarter of hard data and so ",
+      "the least certain figure in the table._\n", sep = "")
+} else {
+  cat("_No diff to show — no adjustments applied._\n")
+}
+```
+
+# Uncertainty
+
+```{r uncertainty-note}
+#| results: asis
+cat("SIBYL produces a **single model-consistent path**. It does **not** ",
+    "quantify parameter uncertainty, trend/equilibrium uncertainty, or data ",
+    "revisions — those are out of scope for this layer. The figures above are ",
+    "point projections conditional on the chosen coefficients (",
+    coef_mode, "), the exogenous-variable assumptions, and the approved ",
+    "add-factors.\n\n", sep = "")
+if (band_overlaid) {
+  bm <- attr(projection_bands, "band_method") %||% "unknown"
+  nd <- attr(projection_bands, "n_draws") %||% NA
+  cat("A stochastic band is overlaid on the headline chart (shaded ribbon, ",
+      "2.5%/97.5% edges) from `martin::solve_martin_stochastic()` — method: **",
+      bm, "**, draws: **", nd, "**. This captures equation-disturbance / ",
+      "coefficient sampling only; it is still conditional on the exogenous ",
+      "and add-factor assumptions.\n", sep = "")
+} else {
+  cat("_No stochastic uncertainty band was computed for this round (opt-in via ",
+      "`martin::solve_martin_stochastic()`)._\n", sep = "")
+}
+```
+
+# Nowcast handover summary
+
+```{r handover}
+if (nrow(handover_forecasts) == 0L) {
+  cat("_No handover forecasts produced (database had no ragged edge)._\n")
+} else {
+  knitr::kable(
+    handover_forecasts |>
+      filter(variable %in% HEADLINE) |>
+      mutate(quarter = as.character(quarter)) |>
+      arrange(variable, quarter),
+    digits = 3
+  )
+}
+```
+
+# LLM description of the projection
+
+```{r description}
+#| results: asis
+cat(projection_description, "\n")
+```
+
+# Round-trip check
+
+```{r round-trip}
+if (nrow(round_trip_check) == 0L) {
+  cat("_No round-trip check performed (no adjustments applied, or LLM bypassed)._\n")
+} else {
+  overall <- attr(round_trip_check, "overall_match")
+  if (!is.null(overall)) {
+    cat("**Overall match:** _", overall, "_\n\n", sep = "")
+  }
+  knitr::kable(round_trip_check)
+}
+```
+
+## Mechanical fidelity audit
+
+This is the **LLM-independent** fidelity check: for every adjustment that
+declared a target variable and an expected direction, it compares that
+declared direction against the realised projection-minus-baseline diff at the
+horizon end. It does not rely on any model-written prose, so it cannot be
+talked around by a persuasive description.
+
+```{r mechanical-audit}
+#| results: asis
+mech <- tryCatch(
+  judgement::mechanical_audit(approved_adjustments, projection, baseline),
+  error = function(e) NULL
+)
+if (is.null(mech) || nrow(mech) == 0L) {
+  cat("_No mechanical audit rows — no adjustment declared a target ",
+      "variable + expected direction this round._\n", sep = "")
+} else {
+  mech_show <- mech |>
+    mutate(realised_diff = sig(realised_diff, 3))
+  print(knitr::kable(mech_show, digits = 3))
+  n_disagree <- sum(mech$agrees %in% FALSE)
+  if (n_disagree > 0L) {
+    cat("\n**", n_disagree, " adjustment(s) realised the WRONG direction ",
+        "vs their declared target** — a translation or magnitude failure the ",
+        "refinement loop or a human should reconcile.\n", sep = "")
+  }
+}
+```
+
+## Narrative coherence diagnostics
+
+Where the audit returns `disagree`, this section attempts to tell apart
+two distinct failure modes:
+
+* **translation_gap** — the narrative quantified a target on variable X
+  and the projection missed it. Likely indicates an AF magnitude or
+  equation-choice issue that the refinement loop should address (or
+  that needs human revision).
+* **model_response** — the narrative asserted no change to variable X
+  but the projection moved it anyway. If X is endogenous (e.g. NCR via
+  the Taylor Rule when LUR shifts) this is MARTIN behaving as designed,
+  not a translation failure. Add a cancelling AF on X if you really
+  need to suppress the response.
+
+`not_addressed` claims — ones the blind describer never restated — are also
+surfaced here so a silently-dropped narrative point is visible (matching the
+dashboard) rather than quietly filtered out.
+
+```{r diagnose}
+#| results: asis
+if (nrow(round_trip_check) == 0L) {
+  cat("_Nothing to diagnose._\n")
+} else {
+  diag <- judgement::diagnose_audit(
+    audit      = round_trip_check,
+    projection = projection,
+    baseline   = baseline
+  )
+  # Surface rows that need attention. `not_addressed` is included so a claim
+  # the describer silently dropped is visible rather than filtered away.
+  attention <- diag[diag$category %in%
+                     c("translation_gap", "model_response",
+                       "narrative_conflict", "unclassified",
+                       "not_addressed"), ,
+                    drop = FALSE]
+  if (nrow(attention) == 0L) {
+    cat("_All audit claims accepted; no diagnostics needed._\n")
+  } else {
+    show <- attention[, c("claim", "category", "variable",
+                          "diff_at_end", "explanation"), drop = FALSE]
+    show$diff_at_end <- sig(show$diff_at_end, 3)
+    print(knitr::kable(show, digits = 3))
+  }
+}
+```
+
+# Provenance
+
+```{r provenance}
+#| results: asis
+cat("- **Generated:** ", format(Sys.time(), "%Y-%m-%d %H:%M %Z"), "\n", sep = "")
+cat("- **Coefficients:** ", coef_label, "\n", sep = "")
+cat("- **Data source:** ", data_source, "\n", sep = "")
+cat("- **Data vintage:** ", as.character(data_vintage), "\n", sep = "")
+cat("- **Approval status:** ", approval_status, "\n", sep = "")
+sc <- attr(projection, "scenario")
+if (!is.null(sc)) {
+  cat("- **Scenario label:** ", sc,
+      " (a run label, not a data vintage)\n", sep = "")
+}
+if (solve_nonconverged) {
+  cat("- **Solve convergence:** NON-CONVERGED (",
+      proj_conv$n_nonfinite %||% NA, " non-finite cell(s))\n", sep = "")
+} else if (!is.null(proj_conv)) {
+  cat("- **Solve convergence:** converged\n")
+}
+```
+
+```{r provenance-series}
+#| results: asis
+# Honest per-series provenance summary (live vs fixture vs proxy vs dummy)
+# from the provenance manifest when available.
+if (prov_has) {
+  cat("## Per-series provenance\n\n")
+  prov_summary <- provenance_tbl |>
+    count(source_class, name = "n_series") |>
+    arrange(desc(n_series))
+  print(knitr::kable(prov_summary))
+  cat("\n_`live` = fetched from a public source this vintage; ",
+      "`fixture_fallback` = backfilled from the bundled MARTINDATA snapshot; ",
+      "`vendored_wf1` = spliced from a vendored EViews workfile; ",
+      "`proxy` = a stand-in series; `dummy` = a deterministic 0/1 indicator; ",
+      "`derived` = computed from other series; `unknown` = off-catalogue._\n",
+      sep = "")
+} else {
+  cat("## Per-series provenance\n\n")
+  cat("_No provenance manifest available for this round (the solve-input ",
+      "database carried no `provenance` attribute — e.g. a hand-built or ",
+      "fixture-only database)._\n", sep = "")
+}
+```
+
+> This report is generated by the pipeline in `_targets.R`. The LLM is a
+> translator and drafter only — every numerical adjustment is meant to be
+> reviewed and approved by a human (via `judgement::review_and_approve()`)
+> before MARTIN sees it. The **Approval status** above states whether that
+> gate was actually exercised this run; a non-interactive gate passes
+> adjustments through unreviewed and is flagged in the degraded-mode banner.
